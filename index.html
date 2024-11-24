@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla de Productos</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+   
+
+    
+</head>
+<body>
+    
+    <h1 class="encabezado">Lista de Productos</h1>
+    
+
+<!-- ------------------#-------------------------------------------------------------------->
+
+    <div class="container-fluid">
+        <div class="container-table" id="table-container">
+            <div class="form-carga">
+                <h2>Cargar productos</h2>
+            </div>
+<!-- ------------------------------------------------------------------------------------------------------------------------- -->
+            <form class="user-form" id="user-form">
+                
+                <div class="img">
+                    <label for="image" class="form-label">Imagen Perfil</label>
+                    <input type="url" name="image" class="form-control" id="image" >
+                </div>
+                <div class="nameP">
+                    <label for="nombre" class="form-label">Nombre del producto</label>
+                    <input type="text" name="nombre" class="form-control" id="nombre" required minlength="4" maxlength="80" >
+                </div>
+                <div class="nameP">
+                    <label for="descripcion" class="form-label">Descripcion</label>
+                    <input type="text" name="descripcion" class="form-control" id="descripcion" required minlength="4" maxlength="80" >
+                </div>
+                <div class="nameP">
+                    <label for="categoria" class="form-label">Categoria</label>
+                    <input type="text" name="categoria" class="form-control" id="categoria" required minlength="4" maxlength="80" >
+                </div>
+                <div class="nameP">
+                    <label for="precio" class="form-label">Precio</label>
+                    <input type="number" name="precio" class="form-control" id="precio" required minlength="4" maxlength="80" >
+                </div>
+                
+
+                <div class="check">
+                    <input class="form-check-input" type="checkbox" name="active" id="active">
+                    <label class="form-check-label" for="active">
+                        Activo
+                    </label>
+                </div>
+
+                <button type="submit" class="submit">Agregar</button>
+            </form>
+<!-- ---------------------------------------------------------------------------------------------------------------- -->
+        <div class="table-container">
+            <div class="barra-search">
+                <div class="barra">
+                    <label for="barra-search" class="form-label">Buscar 👀 </label>
+                    <input type="text" class="form-control" id="barra-search" placeholder="Buscar Producto" onkeyup="inputSearch(event)">
+                    
+                </div>
+            </div>
+
+            <div class="botones-ordenamiento">
+                <button class="button-primary" title="Ordenar de forma descendente" onclick="sortDesc()">
+                    <i class="fas fa-arrow-down"></i>
+                </button>
+                <button class="button-primary" title="Ordenar de forma ascendente" onclick="sortAsc()">
+                    <i class="fas fa-arrow-up"></i>
+                </button>
+                
+            </div>
+
+            <table class="user-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Imagen del producto</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Descripcion</th>
+                        <th scope="col">Categoría</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Aciones</th>
+                        
+                                    
+                    </tr>
+                </thead>
+                <tbody id="table-body"></tbody>
+            </table>
+        </div>
+    </div>
+        
+        
+    </div>
+  
+
+<!-- -------------------------------#------------------------------------------------------>
+
+    <footer>
+        <div>
+            <p>Esta pagina fue creada por Ezequiel Picasso</p>
+        </div>
+    </footer>
+
+<!-- -------------------------------#------------------------------------------------------>
+
+    <script src="/js/admin.js"></script>
+   
+    
+</body>
+</html>
