@@ -28,7 +28,7 @@ body{
 }
 #table-body{
     vertical-align: middle;
-    background-color: #f1c40f;
+    background-color: #cfb754;
     text-align: center;
     font-size: 2rem;
 }
@@ -67,11 +67,11 @@ body{
     justify-content:start;
     gap: 30px;
 }
-.botton-danger{
+.button-danger{
     color: red;
     font-size: 40px;
 }
-.botton-edit{
+.button-edit{
     color: green;
     font-size: 40px;
 }

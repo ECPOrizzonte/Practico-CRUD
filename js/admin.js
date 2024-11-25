@@ -85,64 +85,24 @@ const productos = [
 let isEditing;
 let productsButtonsEdit;
 
-const tableHTML = document.getElementById('table-container')
+const tableHTML = document.getElementById('table-container');
 
-const tableBodyHTML =document.getElementById('table-body')
-
-const productsFormHTML = document.getElementById('user-form')
-
-function renderProductos(arrayProductos){
-
-  tableBodyHTML.innerHTML= '';
-
-
-  arrayProductos.forEach((products)=> {
-      tableBodyHTML.innerHTML += `<tr>
-                                 <td class= 'products-image'>
-                                      <image src="${products.image}" alt="${products.nombre} imagenes"
-                                 </td>
-                                 <td class = "products-name"> ${products.nombre}</td>
-                                 <td class = "products-descripcion"> ${products.descripcion}</td>
-                                 <td class = "products-categori"> ${products.categoria}</td>
-                                 <td class = "products-price"> ${products.precio}</td>                     
-                                 <td class = "products-action">
-
-                                    <button class= "botton-edit" data-edit="${products.id}" title= "Editar">
-                                      <i class="fas fa-pen"></i>
-                                      
-                                   </button>
-                                   <button class= "botton-danger" title= "Eliminar" onclick= "deleteProductos(${products.id})">
-                                      <i class="fas fa-trash"></i>
-                                      
-                                   </button>                                 
-                                                               
-                                 </td>                     
-  
-                              </tr>`
-  })
-}
-
+const tableBodyHTML =document.getElementById('table-body');
+const totalHTML = document.getElementById('total');
+const productsFormHTML = document.getElementById('#user-form');
+const formContainerHTML = document.querySelector(".container-table");
+// const btnSumbitHTML = productsFormHTML.querySelector('button[type="submit"]');
 renderProductos(productos);
-
-function updateEditButton(){
-  productsButtonsEdit = document.querySelectorAll('button[data-edit]')
-  productsButtonsEdit.forEach((btn)=>{
-    botton.addEventListener('click', (evt)=>{
-      const id = evt.currentTarget.dataset.edit
-      completeProductsForm(id)
-    })
-  })
-}
 
 productsFormHTML.addEventListener("submit", (evento)=>{
   evento.preventDefault()
   console.log(evento.target.elements);
 
   const el = evento.target.elements
-  // if(el["password-repeat"].value !== el.password.value){
-  //   Swal.fire("La contraseña no coincide!");
-  //   return
-  // }
+  if(el["password-repeat"].value !== el.password.value){
+    Swal.fire("La contraseña no coincide!");
+    return
+  }
 
   const nuevoArticulo = {
     id: isEditing ? isEditing : crypto.randomUUID(),
@@ -151,7 +111,7 @@ productsFormHTML.addEventListener("submit", (evento)=>{
     descripcion: el.descripcion.value,
     categoria: el.categoria.value,
     precio: el.precio.value,
-    active: el.active.checked
+    active: el.active.checked,
 
   }
   if(isEditing){
@@ -166,11 +126,11 @@ productsFormHTML.addEventListener("submit", (evento)=>{
   }
 
  
-  renderProductos
+  renderProductos(productos);
 
   isEditing = undefined
-  formContainerHTML.classList.add("form-edit")
-  btnSumbitHTML.classList.remove("btn-primary")
+  formContainerHTML.classList.remove("form-edit")
+  btnSumbitHTML.classList.remove("btn")
   btnSumbitHTML.classList.add("btn-success")
 
   btnSumbitHTML.innerText = "Editar"
@@ -183,61 +143,106 @@ productsFormHTML.addEventListener("submit", (evento)=>{
 
 })
 
+function renderProductos(arrayProductos){
+
+  tableBodyHTML.innerHTML= '';
+
+
+  arrayProductos.forEach((products, index)=> {
+      tableBodyHTML.innerHTML += `<tr>
+                                 <td class= 'products-image'>
+                                      <image src="${products.image}" alt="${products.nombre} imagenes"
+                                 </td>
+                                 <td class = "products-name"> ${products.nombre}</td>
+                                 <td class = "products-descripcion"> ${products.descripcion}</td>
+                                 <td class = "products-categori"> ${products.categoria}</td>
+                                 <td class = "products-price"> ${products.precio}</td>                     
+                                 <td class = "products-action">
+
+                                    <button class= "button-edit" data-edit="${products.id}" title= "Editar">
+                                      <i class="fas fa-pen"></i>
+                                      
+                                   </button>
+                                   <button class= "button-danger" title= "Eliminar" onclick= "deleteProductos(${products.id})">
+                                      <i class="fas fa-trash"></i>
+                                      
+                                   </button>                                 
+                                                               
+                                 </td>                     
+  
+                              </tr>`
+  })
+  updateEditButton();
+}
+
+
+
+function updateEditButton(){
+  productsButtonsEdit = document.querySelectorAll('button[data-edit]')
+  productsButtonsEdit.forEach((btn)=>{
+    btn.addEventListener('click', (evt)=>{
+      const id = evt.currentTarget.dataset.edit
+      completeProductsForm(id)
+    })
+  })
+}
+//-----------------------------------------------------------------#------------------------------------------------------------//
+
+function completeProductsForm(idproducts){
+  isEditing = idproducts;
+  
+  const products = productos.find((products)=>{
+    if(parseInt(products.id) === parseInt(idproducts))
+      return true
+  })
+  if(!products){
+    alert('No se encontro el producto')
+    return
+  }
+  const el = productsFormHTML.elements;
+  el.id.value = products.id;
+  el.image.value = products.image;
+  el.nombre.value = products.nombre;
+  el.descripcion.value = products.descripcion;
+  el.categoria.value = products.categoria;
+  el.precio.value = products.precio;
+  el["password-repeat"].value = products.password;
+  el.active.checked = products.active;
+
+
+  formContainerHTML.classList.add("form-edit")
+  btnSumbitHTML.classList.remove("btn-primary")
+  btnSumbitHTML.classList.add("btn-success")
+
+  btnSumbitHTML.innerText = "Editar"
+
+  titleFormHTML.innerText = "Editar usuario"
+}
+
+
+
+
 // ---------------------------------------------------------------#---------------------------------------------------------------//
 
-function inputSearch(evt){
-  console.log(evt.target.value)
-  const search = evt.target.value.tolowerCase();
-
-  const filteredProductos = productos.filter((products)=>{
-    if(products.nombre.toLowerCase().includes(search)){
-      return true;
-
-    }
-    return false;
-  })
-  renderProductos(filteredProductos);
-
-}
- function sortDesc(){
-  const collator = new Intl.Collator(undefined, {sensitivity: 'base'})
-  productos.sort((a,b)=> {
-    return collator.compare(b.nombre, a.nombre)
-  })
-  renderProductos(productos)
-  
-}
-
-function sortAsc(){
-  const collator = new Intl.Collator(undefined, {sensitivity: 'base'})
-  productos.sort((a,b)=> {
-    return collator.compare(a.nombre, b.nombre)
-  })
-  renderProductos(productos)
-}
-// --------------------------------------------------------------#---------------------------------------------------------------//
-function deleteProductos(id){
+function deleteProductos(idProducts){
   const indice = productos.findIndex((products)=> {
-    if(products.id === id){
+    if(products.id === idProducts){
       return true
     }
 
   })
-  console.log(indice);
+  
   if(indice=== -1){
     Swal.fire({
       title: "¡Alerta! 👀",
       text: "No se encontro el producto",
       icon: "Warning",
-      showConfirmButton: true,
-      confirmButtonText: 'De acuerdo 😓',
-      confirmButtonColor: '#2b285b'
-    });
-    // alert('No encontro el producto')
+      
+    })
     return
-  }
-
-
+  }  
+  productos.splice(indice, 1)
+  renderProductos(productos)
 
   Swal.fire({
     title: "Esta seguro que quieres eliminar el producto?",
@@ -255,42 +260,46 @@ function deleteProductos(id){
         title: "Se elimino correctamente",
         showConfirmButton: false,
         timer: 2000
-      });
+      })
     }
-  });
-
-
-
-
-
-
-  productos.splice(indice, 1)
-  renderProductos(productos)
-}
-
-//---------------------------------------------------------------#---------------------------------------------------------------//
-
-function completeProductsForm(idproducts){
-  isEditing = idproducts;
-  const products = productos.find((products)=>{
-    if(products.id === idproducts)
-      return true
   })
-  if(products){
-    alert('No se encontro el producto')
-  }
-  const el = productsFormHTML.elements;
-
-  el.image.value = products.image
-  el.nombre.value = products.nombre;
-  el.descripcion.value = products.descripcion;
-  el.categoria.value = products.categoria;
-  el.precio.value = products.precio;
-  el("password-repeat").value = products.password;
-  el.checked.value = products.active;
-
   
+}
 
 
+
+
+//-----------------------------------------------------------------#------------------------------------------------------//
+function inputSearch(evt){
+  console.log(evt.target.value)
+  const search = evt.target.value.tolowerCase();
+
+  const filteredProductos = productos.filter((products)=>{
+    if(products.nombre.toLowerCase().includes(search)){
+      return true;
+
+    }
+    return false;
+  })
+  renderProductos(filteredProductos)
 
 }
+ function sortDesc(){
+  const collator = new Intl.Collator(undefined, {sensitivity: 'base'})
+  productos.sort((a,b)=> {
+    return collator.compare(b.nombre, a.nombre)
+  })
+  renderProductos(productos);
+  
+}
+
+function sortAsc(){
+  const collator = new Intl.Collator(undefined, {sensitivity: 'base'})
+  productos.sort((a,b)=> {
+    return collator.compare(a.nombre, b.nombre)
+  })
+  renderProductos(productos);
+}
+
+
+
