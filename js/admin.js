@@ -272,7 +272,7 @@ function deleteProductos(idProducts){
 //-----------------------------------------------------------------#------------------------------------------------------//
 function inputSearch(evt){
   console.log(evt.target.value)
-  const search = evt.target.value.tolowerCase();
+  const search = evt.target.value.toLowerCase();
 
   const filteredProductos = productos.filter((products)=>{
     if(products.nombre.toLowerCase().includes(search)){
