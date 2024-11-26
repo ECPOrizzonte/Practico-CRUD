@@ -142,7 +142,7 @@ productsFormHTML.addEventListener("submit", (evento)=>{
 
 
 })
-
+//!tabla
 function renderProductos(arrayProductos){
 
   tableBodyHTML.innerHTML= '';
@@ -172,12 +172,12 @@ function renderProductos(arrayProductos){
   
                               </tr>`
   })
-  updateEditButton();
+  updateEditButtons();
 }
 
 
-
-function updateEditButton(){
+//!editar botones
+function updateEditButtons(){
   productsButtonsEdit = document.querySelectorAll('button[data-edit]')
   productsButtonsEdit.forEach((btn)=>{
     btn.addEventListener('click', (evt)=>{
@@ -187,7 +187,7 @@ function updateEditButton(){
   })
 }
 //-----------------------------------------------------------------#------------------------------------------------------------//
-
+//!formulario
 function completeProductsForm(idproducts){
   isEditing = idproducts;
   
@@ -219,11 +219,8 @@ function completeProductsForm(idproducts){
   titleFormHTML.innerText = "Editar usuario"
 }
 
-
-
-
 // ---------------------------------------------------------------#---------------------------------------------------------------//
-
+//!eliminar productos
 function deleteProductos(idProducts){
   const indice = productos.findIndex((products)=> {
     if(products.id === idProducts){
@@ -266,12 +263,10 @@ function deleteProductos(idProducts){
   
 }
 
-
-
-
 //-----------------------------------------------------------------#------------------------------------------------------//
+//!filtrar productos
 function inputSearch(evt){
-  console.log(evt.target.value)
+  
   const search = evt.target.value.toLowerCase();
 
   const filteredProductos = productos.filter((products)=>{
@@ -284,6 +279,10 @@ function inputSearch(evt){
   renderProductos(filteredProductos)
 
 }
+
+//---------------------------------------------------------------#-------------------------------------------------------//
+
+//!ordenar up & down
  function sortDesc(){
   const collator = new Intl.Collator(undefined, {sensitivity: 'base'})
   productos.sort((a,b)=> {
