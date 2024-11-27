@@ -89,59 +89,12 @@ const tableHTML = document.getElementById('table-container');
 
 const tableBodyHTML =document.getElementById('table-body');
 const totalHTML = document.getElementById('total');
-const productsFormHTML = document.getElementById('#user-form');
-const formContainerHTML = document.querySelector(".container-table");
+const productsFormHTML = document.getElementById('user-form');
+const formContainerHTML = document.querySelector("container-table");
 // const btnSumbitHTML = productsFormHTML.querySelector('button[type="submit"]');
 renderProductos(productos);
+//------------------------------------------------------------------#-------------------------------------------------------------//
 
-productsFormHTML.addEventListener("submit", (evento)=>{
-  evento.preventDefault()
-  console.log(evento.target.elements);
-
-  const el = evento.target.elements
-  if(el["password-repeat"].value !== el.password.value){
-    Swal.fire("La contraseña no coincide!");
-    return
-  }
-
-  const nuevoArticulo = {
-    id: isEditing ? isEditing : crypto.randomUUID(),
-    image: el.image.value,
-    nombre:el.nombre.value,
-    descripcion: el.descripcion.value,
-    categoria: el.categoria.value,
-    precio: el.precio.value,
-    active: el.active.checked,
-
-  }
-  if(isEditing){
-    const productsIndex = productos.findIndex((products)=>{
-      if(products.id === isEditing){
-        return true
-      }
-    })
-    productos[productsIndex] = nuevoArticulo
-  }else{
-    productos.push(nuevoArticulo)
-  }
-
- 
-  renderProductos(productos);
-
-  isEditing = undefined
-  formContainerHTML.classList.remove("form-edit")
-  btnSumbitHTML.classList.remove("btn")
-  btnSumbitHTML.classList.add("btn-success")
-
-  btnSumbitHTML.innerText = "Editar"
-
-  titleFormHTML.innerText = "Editar producto"
-
-  productsFormHTML.reset()
-  el.nombre.focus()
-
-
-})
 //!tabla
 function renderProductos(arrayProductos){
 
@@ -159,7 +112,7 @@ function renderProductos(arrayProductos){
                                  <td class = "products-price"> ${products.precio}</td>                     
                                  <td class = "products-action">
 
-                                    <button class= "button-edit" data-edit="${products.id}" title= "Editar">
+                                    <button class= "button-edit" data-edit="${products.id}" title= "Editar producto">
                                       <i class="fas fa-pen"></i>
                                       
                                    </button>
@@ -176,6 +129,49 @@ function renderProductos(arrayProductos){
 }
 
 
+//!cargar productos
+
+productsFormHTML.addEventListener("submit", (evento)=>{
+  evento.preventDefault()
+  
+  const el = evento.target.elements
+
+  const nuevoArticulo = {
+    id: isEditing ? isEditing : crypto.randomUUID(),
+    image: el.image.value,
+    nombre:el.nombre.value,
+    descripcion: el.descripcion.value,
+    categoria: el.categoria.value,
+    precio: el.precio.value,
+    active: el.active.checkbox
+
+  }
+  if(isEditing){
+    const productsIndex = productos.findIndex((products)=>{
+      if(products.id === isEditing){
+        return true
+      }
+    })
+    productos[productsIndex] = nuevoArticulo
+  }else{
+    productos.push(nuevoArticulo) 
+  }
+
+  renderProductos(productos);
+
+  isEditing = undefined;
+  formContainerHTML.classList.add("form-edit")
+  btnSumbitHTML.classList.remove("btn")
+  btnSumbitHTML.classList.add("btn-success")
+
+  btnSumbitHTML.innerText = "Editar"
+
+  titleFormHTML.innerText = "Editar producto"
+
+  productsFormHTML.reset()
+  el.nombre.focus()
+})
+
 //!editar botones
 function updateEditButtons(){
   productsButtonsEdit = document.querySelectorAll('button[data-edit]')
@@ -188,12 +184,13 @@ function updateEditButtons(){
 }
 //-----------------------------------------------------------------#------------------------------------------------------------//
 //!formulario
-function completeProductsForm(idproducts){
-  isEditing = idproducts;
+function completeProductsForm(idProducts){
+  isEditing =  idProducts;
   
   const products = productos.find((products)=>{
-    if(parseInt(products.id) === parseInt(idproducts))
+    if(products.id === idProducts){
       return true
+    }
   })
   if(!products){
     alert('No se encontro el producto')
@@ -206,7 +203,6 @@ function completeProductsForm(idproducts){
   el.descripcion.value = products.descripcion;
   el.categoria.value = products.categoria;
   el.precio.value = products.precio;
-  el["password-repeat"].value = products.password;
   el.active.checked = products.active;
 
 
@@ -216,14 +212,14 @@ function completeProductsForm(idproducts){
 
   btnSumbitHTML.innerText = "Editar"
 
-  titleFormHTML.innerText = "Editar usuario"
+  titleFormHTML.innerText = "Editar producto"
 }
 
 // ---------------------------------------------------------------#---------------------------------------------------------------//
 //!eliminar productos
-function deleteProductos(idProducts){
+function deleteProductos(id){
   const indice = productos.findIndex((products)=> {
-    if(products.id === idProducts){
+    if(products.id === id){
       return true
     }
 
@@ -233,13 +229,12 @@ function deleteProductos(idProducts){
     Swal.fire({
       title: "¡Alerta! 👀",
       text: "No se encontro el producto",
-      icon: "Warning",
+      icon: "info"
       
     })
     return
   }  
-  productos.splice(indice, 1)
-  renderProductos(productos)
+  
 
   Swal.fire({
     title: "Esta seguro que quieres eliminar el producto?",
@@ -258,9 +253,12 @@ function deleteProductos(idProducts){
         showConfirmButton: false,
         timer: 2000
       })
+      productos.splice(indice, 1)
+      renderProductos(productos)
+      
     }
-  })
-  
+  });
+ 
 }
 
 //-----------------------------------------------------------------#------------------------------------------------------//

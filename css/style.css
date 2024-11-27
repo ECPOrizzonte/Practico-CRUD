@@ -4,12 +4,14 @@
     box-sizing: border-box;   
 }
 body{
-    background-color: #fcf3cf ;
+    background-color: #70caa86b ;
 }
+
 .container-table{
     width: 100%;
     overflow-x: auto;
 }
+
 
 
 .user-table{
@@ -21,13 +23,16 @@ body{
     }
     th{
         font-size: 2rem;
+        
     }
 }
 #table-body{
     vertical-align: middle;
-    background-color: #cfb754;
+    background-color: #54c7cf;
     text-align: center;
     font-size: 2rem;
+    border: 10px solid black;
+    border-radius: 15px 0px 15px;
 }
 
 .encabezado{
@@ -84,14 +89,14 @@ button.btn{
     font-size: 40px;
 }
 .button-edit{
-    color: green;
+    color: rgb(35, 110, 35);
     font-size: 40px;
 }
-.user-form{
+.form-container{
     max-width: 100%;
     margin: 0 auto;
     font-size: 2rem;
-    background-color: #f5cba7;
+    background-color: #75e6c8;
     border: 3px solid black;
     border-radius: 10px;
     /* text-align: center; */
@@ -107,7 +112,8 @@ button.btn{
 .button-primary{
     font-size: 3rem;
     color: #2471a3;
-    background-color: #27ae60 ;
+    background-color: #bdcfc4 ;
+    border-radius: 15px 0px 15px;
 
 }
 .submit{
